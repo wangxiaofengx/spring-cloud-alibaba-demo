@@ -1,0 +1,7 @@
+# Project exclude paths
+/application-1/target/
+/Service1/service-1-api/target/
+/Service1/service-1-server/target/
+/Service2/service-2-api/target/
+/Service2/service-2-server/target/
+/.idea/
