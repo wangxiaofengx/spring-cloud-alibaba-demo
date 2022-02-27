@@ -12,7 +12,6 @@ import org.springframework.context.annotation.Bean;
 public class Service2Bootstrap {
 
     public static void main(String[] args) {
-        System.setProperty("nacos.standalone", "true");
         SpringApplication.run(Service2Bootstrap.class, args);
     }
 

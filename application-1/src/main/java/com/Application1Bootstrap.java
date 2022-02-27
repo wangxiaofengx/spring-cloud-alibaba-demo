@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Bean;
 @EnableDiscoveryClient
 public class Application1Bootstrap {
     public static void main(String[] args) {
-        System.setProperty("nacos.standalone", "true");
         SpringApplication.run(Application1Bootstrap.class, args);
     }
 

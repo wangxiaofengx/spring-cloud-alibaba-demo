@@ -2,7 +2,11 @@ server:
   port: 56020 #启动端口 命令行注入
   servlet:
     context-path: /application1
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 spring:
   application:
     name: application1
@@ -19,3 +23,7 @@ spring:
         file-extension: yaml
         namespace: c67e4a97-a698-4d6d-9bb1-cfac5f5b51c4 # 开发环境
         group: NACOS_MICROSERVICE_GROUP # xx业务组
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: localhost:8080
