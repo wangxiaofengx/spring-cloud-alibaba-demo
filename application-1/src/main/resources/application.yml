@@ -1,0 +1,32 @@
+server:
+  port: 56020 #启动端口 命令行注入
+  servlet:
+    context-path: /application1
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+spring:
+  application:
+    name: application1
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: localhost:33333
+dubbo:
+  protocol:
+    # dubbo 协议
+    name: dubbo
+    # dubbo 协议端口（ -1 表示自增端口，从 20880 开始）
+    port: ${dubbo_port:-1}
+  registry:
+    address: nacos://127.0.0.1:8848
+  application:
+    qos-enable: false
+  consumer:
+    check: false

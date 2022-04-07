@@ -1,0 +1,28 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+server:
+  port: 12345
+
+spring:
+  application:
+    name: gateway-server
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: application1
+          uri: lb://application1
+          predicates:
+            - Path=/application1/**
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+logging:
+  level:
+    root: info

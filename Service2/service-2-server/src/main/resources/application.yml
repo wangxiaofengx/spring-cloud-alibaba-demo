@@ -9,13 +9,6 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
-        namespace: c67e4a97-a698-4d6d-9bb1-cfac5f5b51c4
-        cluster-name: DEFAULT
-      config:
-        server-addr: 127.0.0.1:8848 # 配置中心地址
-        file-extension: yaml
-        namespace: c67e4a97-a698-4d6d-9bb1-cfac5f5b51c4 # 开发环境
-        group: NACOS_MICROSERVICE_GROUP # xx业务组
 dubbo:
   scan:
     # dubbo 服务扫描基准包
@@ -24,7 +17,7 @@ dubbo:
     # dubbo 协议
     name: dubbo
     # dubbo 协议端口（ -1 表示自增端口，从 20880 开始）
-    port: ${dubbo_port:20891}
+    port: ${dubbo_port:-1}
   registry:
     address: nacos://127.0.0.1:8848
   application:
