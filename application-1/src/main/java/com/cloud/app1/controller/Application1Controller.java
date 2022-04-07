@@ -1,8 +1,8 @@
-package com.pbteach.microservice.application1.controller;
+package com.cloud.app1.controller;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
-import com.pbteach.microservice.service1.api.ConsumerService;
+import com.cloud.service1.api.ConsumerService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ public class Application1Controller {
     private ConsumerService consumerService;
 
     @GetMapping("/service")
-    @SentinelResource(value = "/service", fallback = "serviceFallback")
+    @SentinelResource(value = "/service")
     public String service() {
         log.info(Thread.currentThread().getId() + "");
         return "test" + consumerService.service();

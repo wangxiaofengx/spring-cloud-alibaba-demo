@@ -10,9 +10,6 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
 dubbo:
-  scan:
-    # dubbo 服务扫描基准包
-    base-packages: com.pbteach.microservice
   protocol:
     # dubbo 协议
     name: dubbo

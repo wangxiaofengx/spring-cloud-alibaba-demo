@@ -1,8 +1,8 @@
-package com.pbteach.microservice.service1.service;
+package com.cloud.service1.service;
 
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
-import com.pbteach.microservice.service1.api.ConsumerService;
-import com.pbteach.microservice.service2.api.ProviderService;
+import com.cloud.service2.api.ProviderService;
+import com.cloud.service1.api.ConsumerService;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 

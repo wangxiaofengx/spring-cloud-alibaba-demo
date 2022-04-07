@@ -15,9 +15,9 @@ spring:
         port: 8719
         dashboard: localhost:33333
 dubbo:
-  scan:
-    # dubbo 服务扫描基准包
-    base-packages: com.pbteach.microservice
+#  scan:
+#    # dubbo 服务扫描基准包
+#    base-packages: com.pbteach.microservice
   protocol:
     # dubbo 协议
     name: dubbo

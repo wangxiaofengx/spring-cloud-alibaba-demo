@@ -1,6 +1,6 @@
-package com.pbteach.microservice.service2.service;
+package com.cloud.service2.service;
 
-import com.pbteach.microservice.service2.api.ProviderService;
+import com.cloud.service2.api.ProviderService;
 import org.apache.dubbo.config.annotation.DubboService;
 
 @DubboService
