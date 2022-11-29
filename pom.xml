@@ -13,7 +13,6 @@
         <module>Service1</module>
         <module>Service2</module>
         <module>gateway</module>
-        <module>SeataService</module>
     </modules>
 
     <properties>
