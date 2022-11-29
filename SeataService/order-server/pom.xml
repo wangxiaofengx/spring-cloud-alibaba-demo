@@ -3,13 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>root</artifactId>
+        <artifactId>SeataService</artifactId>
         <groupId>org.example.spring.cloud.alibaba</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>application-1</artifactId>
+    <artifactId>order-server</artifactId>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -18,13 +18,13 @@
     <dependencies>
         <dependency>
             <groupId>org.example.spring.cloud.alibaba</groupId>
-            <artifactId>service-1-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <artifactId>order-api</artifactId>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.example.spring.cloud.alibaba</groupId>
-            <artifactId>order-api</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <artifactId>stock-api</artifactId>
+            <version>${version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -36,11 +36,25 @@
         </dependency>
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-dubbo</artifactId>
         </dependency>
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
-            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+            <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>com.esotericsoftware</groupId>

@@ -1,0 +1,36 @@
+server:
+  port: ${port:56060}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    alibaba:
+      seata:
+        tx-service-group: default_tx_group
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1/shop?useUnicode=true&characterEncoding=utf8&autoReconnect=true&rewriteBatchedStatements=TRUE&serverTimezone=UTC
+    username: root
+    password: 123456
+dubbo:
+  protocol:
+    name: dubbo
+    port: ${dubbo_port:-1}
+    serialization: kryo
+  registry:
+    address: nacos://127.0.0.1:8848
+  application:
+    qos-enable: false
+  consumer:
+    check: false
+seata:
+  tx-service-group: default_tx_group
+  service:
+    vgroup-mapping:
+      default_tx_group: default
