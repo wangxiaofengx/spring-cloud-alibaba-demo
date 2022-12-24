@@ -1,9 +1,11 @@
 package com.cloud.app1.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.cloud.service1.api.ConsumerService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,10 +15,21 @@ public class Application1Controller {
     @DubboReference
     private ConsumerService consumerService;
 
+    @Autowired
+    private com.cloud.service1.rest.api.ConsumerService consumerRestService;
+
     @GetMapping("/service")
     public String service() {
         log.info(Thread.currentThread().getId() + "");
         return "test" + consumerService.service();
+    }
+
+
+    @GetMapping("/rest/service")
+    @SentinelResource("restService")
+    public String restService() {
+        log.info(Thread.currentThread().getId() + "");
+        return "test-rest-" + consumerRestService.service();
     }
 
     // Fallback 函数，函数签名与原函数一致或加一个 Throwable 类型的参数.

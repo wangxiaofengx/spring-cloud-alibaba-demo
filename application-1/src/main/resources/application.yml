@@ -28,3 +28,6 @@ dubbo:
     qos-enable: false
   consumer:
     check: false
+logging:
+  level:
+    com.cloud.service1.rest.api.ConsumerService: debug
