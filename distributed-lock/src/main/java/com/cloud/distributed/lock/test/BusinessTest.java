@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class BusinessTest {
 
-    int number = 1000;
+    int number = 5000;
 
     @DistributedLock
     public int business() {

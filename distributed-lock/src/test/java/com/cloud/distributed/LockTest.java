@@ -42,7 +42,7 @@ public class LockTest {
         for (int i = 0; i < loop; i++) {
             threadPoolExecutor.execute(() -> {
                 try {
-                    distributedLock();
+                    businessTest.business();
                     countDownLatch.countDown();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -53,13 +53,5 @@ public class LockTest {
         LocalDateTime end = LocalDateTime.now();
         Duration between = Duration.between(begin, end);
         log.info("number:{},elapsed time:{}", businessTest.getNumber(), between.toMillis());
-    }
-
-    public void distributedLock(){
-        business();
-    }
-
-    public int business() {
-        return businessTest.business();
     }
 }

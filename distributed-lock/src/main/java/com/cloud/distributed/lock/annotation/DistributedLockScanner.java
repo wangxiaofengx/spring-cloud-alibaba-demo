@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
 import java.lang.reflect.Method;
+import java.util.concurrent.locks.Lock;
 
 /**
  * 分布式锁扫描类
@@ -33,8 +34,11 @@ public class DistributedLockScanner extends AbstractAutoProxyCreator
 
     DistributedLockInterceptor distributedLockInterceptor;
 
-    public DistributedLockScanner() {
+    Lock lock;
+
+    public DistributedLockScanner(Lock lock) {
         setProxyTargetClass(true);
+        this.lock = lock;
     }
 
     @Override
@@ -65,11 +69,11 @@ public class DistributedLockScanner extends AbstractAutoProxyCreator
                 return bean;
             }
 
-            distributedLockInterceptor = new DistributedLockInterceptor();
+            distributedLockInterceptor = new DistributedLockInterceptor(this.lock);
 
             if (!AopUtils.isAopProxy(bean)) {
                 bean = super.wrapIfNecessary(bean, beanName, cacheKey);
-            }  else {
+            } else {
                 AdvisedSupport advised = SpringProxyUtils.getAdvisedSupport(bean);
                 Advisor[] advisor = buildAdvisors(beanName, getAdvicesAndAdvisorsForBean(null, null, null));
                 for (Advisor avr : advisor) {

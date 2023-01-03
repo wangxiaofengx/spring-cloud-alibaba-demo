@@ -1,5 +1,6 @@
 package com.cloud.distributed.lock.config.curator;
 
+import com.cloud.distributed.lock.config.DistributedLockI;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -19,5 +20,5 @@ public class CuratorProperties {
 
     int retryCount;
 
-    String path;
+    String path = DistributedLockI.PATH;
 }
