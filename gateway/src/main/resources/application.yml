@@ -15,6 +15,13 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+      routes:
+        - id: service-provider
+          uri: lb://service1
+          predicates:
+            - Path=/service/**
+          filters:
+            - StripPrefix=1
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
