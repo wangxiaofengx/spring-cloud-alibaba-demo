@@ -18,4 +18,6 @@ public class CuratorProperties {
     int elapsedTimeMs;
 
     int retryCount;
+
+    String path;
 }

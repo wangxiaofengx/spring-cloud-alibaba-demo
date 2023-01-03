@@ -11,6 +11,8 @@ public class RedissonProperties {
 
     Single single;
 
+    String path;
+
     @Data
     public static class Single {
         String address;

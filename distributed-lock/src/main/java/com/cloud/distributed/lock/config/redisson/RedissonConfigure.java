@@ -1,5 +1,6 @@
 package com.cloud.distributed.lock.config.redisson;
 
+import com.cloud.distributed.lock.config.DistributedLock;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
@@ -12,10 +13,12 @@ public class RedissonConfigure {
 
     @Bean
     @ConditionalOnBean(value = RedissonProperties.class)
-    public RedissonClient redissonClient(RedissonProperties redissonProperties) {
+    public RedissonLock redissonClient(RedissonProperties redissonProperties, DistributedLock distributedLock) {
         Config config = new Config();
         config.useSingleServer().setAddress("redis://" + redissonProperties.single.address);
         RedissonClient redissonClient = Redisson.create();
-        return redissonClient;
+        RedissonLock redissonLock = new RedissonLock(redissonClient, redissonProperties.path);
+        distributedLock.setRedisLock(redissonLock);
+        return redissonLock;
     }
 }
