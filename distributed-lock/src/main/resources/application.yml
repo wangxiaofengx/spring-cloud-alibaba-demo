@@ -1,16 +1,12 @@
-server:
-  port: 56030 #启动端口 命令行注入
-management:
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-spring:
-  application:
-    name: distributed-lock
-curator:
-  connectString: 127.0.0.1:2181
-  sessionTimeoutMs: 60000
-  connectionTimeoutMs: 5000
-  elapsedTimeMs: 5000
-  maxRetries: 5
+distributed:
+  lock:
+    mode: redis
+    zookeeper:
+      connectString: 127.0.0.1:2181
+      sessionTimeoutMs: 60000
+      connectionTimeoutMs: 5000
+      elapsedTimeMs: 5000
+      maxRetries: 5
+    redis:
+      single:
+        address: 127.0.0.1:6379

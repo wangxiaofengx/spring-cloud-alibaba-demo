@@ -15,7 +15,8 @@ public interface StockMapper {
     @Select("select * from stock_info")
     List<StockInfo> findAll();
 
-    @Insert("insert into stock_info(name,status) values(#{name}, #{status})")
+    @Insert("insert into stock_info(name,status,amount) values(#{name}, #{status},#{amount})")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     Long create(StockInfo stockInfo);
+
 }

@@ -1,0 +1,21 @@
+package com.cloud.distributed.lock.config.redisson;
+
+import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
+import org.redisson.config.Config;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class RedissonConfigure {
+
+    @Bean
+    @ConditionalOnBean(value = RedissonProperties.class)
+    public RedissonClient redissonClient(RedissonProperties redissonProperties) {
+        Config config = new Config();
+        config.useSingleServer().setAddress("redis://" + redissonProperties.single.address);
+        RedissonClient redissonClient = Redisson.create();
+        return redissonClient;
+    }
+}

@@ -9,5 +9,7 @@ public class StockInfo {
 
     private String name;
 
+    private int amount;
+
     private Integer status;
 }
