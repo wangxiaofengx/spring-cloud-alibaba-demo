@@ -5,6 +5,7 @@ spring:
     name: service2
   main:
     allow-bean-definition-overriding: true # Spring Boot 2.1 需要设定
+    allow-circular-references: true
   cloud:
     nacos:
       discovery:

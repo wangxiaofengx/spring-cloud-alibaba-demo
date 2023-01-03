@@ -15,6 +15,7 @@
         <module>gateway</module>
         <module>rocketmq-service</module>
         <module>SeataService</module>
+        <module>distributed-lock</module>
     </modules>
 
     <properties>
