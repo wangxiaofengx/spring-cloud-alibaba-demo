@@ -35,7 +35,7 @@ public class BusinessService {
                 try {
                     businessService.inc();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    throw new RuntimeException(e);
                 } finally {
                     countDownLatch.countDown();
                 }

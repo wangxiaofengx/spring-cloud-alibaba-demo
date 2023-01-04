@@ -41,11 +41,7 @@ public class CuratorLock implements DistributedLockI {
 
     @Override
     public void lock(long time, TimeUnit unit) {
-        try {
-            this.interProcessLock.acquire(time, unit);
-        } catch (Exception e) {
-            throw new DistributedLockException(e);
-        }
+        throw new UnsupportedOperationException("zookeeper mode nonsupport lock timeout");
     }
 
     @Override
@@ -55,12 +51,20 @@ public class CuratorLock implements DistributedLockI {
 
     @Override
     public boolean tryLock() {
-        return this.interProcessLock.isAcquiredInThisProcess();
+        try {
+            return this.interProcessLock.acquire(1, TimeUnit.MILLISECONDS);
+        } catch (Exception e) {
+            throw new DistributedLockException(e);
+        }
     }
 
     @Override
     public boolean tryLock(long time, TimeUnit unit) throws InterruptedException {
-        return this.interProcessLock.isAcquiredInThisProcess();
+        try {
+            return this.interProcessLock.acquire(time, unit);
+        } catch (Exception e) {
+            throw new DistributedLockException(e);
+        }
     }
 
     @Override
@@ -77,7 +81,7 @@ public class CuratorLock implements DistributedLockI {
         throw new UnsupportedOperationException("zookeeper mode nonsupport newCondition");
     }
 
-    public void destroy(){
+    public void destroy() {
         this.curatorFramework.close();
     }
 }

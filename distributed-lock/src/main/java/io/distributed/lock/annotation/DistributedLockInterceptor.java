@@ -1,5 +1,6 @@
 package io.distributed.lock.annotation;
 
+import io.distributed.lock.exception.DistributedLockTimeoutException;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.support.AopUtils;
@@ -32,9 +33,17 @@ public class DistributedLockInterceptor implements MethodInterceptor {
         Method specificMethod = ClassUtils.getMostSpecificMethod(methodInvocation.getMethod(), targetClass);
         if (specificMethod != null && !specificMethod.getDeclaringClass().equals(Object.class)) {
             final Method method = BridgeMethodResolver.findBridgedMethod(specificMethod);
-            final DistributedLock globalTransactionalAnnotation = getAnnotation(method, targetClass, DistributedLock.class);
-            if (globalTransactionalAnnotation != null) {
-                this.lock.lock();
+            final DistributedLock distributedLock = getAnnotation(method, targetClass, DistributedLock.class);
+            if (distributedLock != null) {
+                if (distributedLock.timeout() > 0) {
+                    boolean lockSuccess = this.lock.tryLock(distributedLock.timeout(), distributedLock.unit());
+                    if (!lockSuccess) {
+                        throw new DistributedLockTimeoutException("distributed lock acquire timeout");
+                    }
+                } else {
+                    this.lock.lock();
+                }
+
                 try {
                     Object proceed = methodInvocation.proceed();
                     return proceed;
