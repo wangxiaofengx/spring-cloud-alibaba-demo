@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * spring 自动装配类
+ * spring boot 自动装配类
  *
  * @author wangxiaofeng
  * @date 2023/1/4 9:55
