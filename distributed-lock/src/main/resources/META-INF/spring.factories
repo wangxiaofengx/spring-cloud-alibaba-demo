@@ -1,2 +1,2 @@
 # Auto Configure
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.cloud.distributed.lock.autoconfigure.DistributedLockAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.distributed.lock.autoconfigure.DistributedLockAutoConfiguration

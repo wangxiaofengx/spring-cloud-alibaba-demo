@@ -31,3 +31,16 @@ dubbo:
 logging:
   level:
     com.cloud.service1.rest.api.ConsumerService: debug
+distributed:
+  lock:
+    enabled: true
+    mode: zookeeper
+    zookeeper:
+      connectString: 127.0.0.1:2181
+      sessionTimeoutMs: 60000
+      connectionTimeoutMs: 5000
+      elapsedTimeMs: 5000
+      maxRetries: 5
+    redis:
+      single:
+        address: 127.0.0.1:6379
