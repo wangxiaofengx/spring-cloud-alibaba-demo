@@ -1,5 +1,5 @@
 server:
-  port: 56020 #启动端口 命令行注入
+  port: 0 #启动端口 命令行注入
 management:
   endpoints:
     web:
