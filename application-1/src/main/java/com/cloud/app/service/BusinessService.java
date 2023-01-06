@@ -11,9 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 
 @Service
 @Slf4j
@@ -67,21 +65,21 @@ public class BusinessService {
         Integer integer = bucket.get();
         integer--;
         bucket.set(integer);
-        Future<?> submit = executorService.submit(() -> businessService.update2());
-        try {
-            submit.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+//        Future<?> submit = executorService.submit(() -> businessService.update2());
+//        try {
+//            submit.get();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
 //        businessService.update2();
         return integer;
     }
 
     @DistributedLock(name = "update2")
     public int update2() {
-        RBucket<Integer> bucket = this.redissonClient.getBucket("number2");
+        RBucket<Integer> bucket = this.redissonClient.getBucket("number");
         Integer integer = bucket.get();
         integer--;
         bucket.set(integer);
@@ -93,13 +91,13 @@ public class BusinessService {
 //        } catch (ExecutionException e) {
 //            e.printStackTrace();
 //        }
-//        businessService.update3();
+        businessService.update3();
         return integer;
     }
 
     @DistributedLock(name = "update1")
     public int update3() {
-        RBucket<Integer> bucket = this.redissonClient.getBucket("number3");
+        RBucket<Integer> bucket = this.redissonClient.getBucket("number");
         Integer integer = bucket.get();
         integer--;
         bucket.set(integer);

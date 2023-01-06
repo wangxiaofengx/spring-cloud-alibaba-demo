@@ -33,7 +33,7 @@ logging:
     com.cloud.service1.rest.api.ConsumerService: debug
 distributed:
   lock:
-    mode: zookeeper
+    mode: redis
     zookeeper:
       connectString: 127.0.0.1:2181
       sessionTimeoutMs: 60000

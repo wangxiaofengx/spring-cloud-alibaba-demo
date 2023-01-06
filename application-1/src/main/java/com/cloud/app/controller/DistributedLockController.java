@@ -27,13 +27,15 @@ public class DistributedLockController {
         RBucket<Integer> bucket = redissonClient.getBucket("number");
         bucket.set(1000);
 
-        RBucket<Integer> bucket2 = redissonClient.getBucket("number2");
-        bucket2.set(1000);
+//        RBucket<Integer> bucket2 = redissonClient.getBucket("number2");
+//        bucket2.set(1000);
+//
+//        RBucket<Integer> bucket3 = redissonClient.getBucket("number3");
+//        bucket3.set(1000);
 
-        RBucket<Integer> bucket3 = redissonClient.getBucket("number3");
-        bucket3.set(1000);
-
-        return bucket.get() + bucket2.get() + bucket3.get();
+        return bucket.get()
+//                + bucket2.get() + bucket3.get()
+                ;
     }
 
     @GetMapping("/update")
@@ -44,9 +46,11 @@ public class DistributedLockController {
     @GetMapping("/get")
     public int get() {
         RBucket<Integer> bucket = redissonClient.getBucket("number");
-        RBucket<Integer> bucket2 = redissonClient.getBucket("number2");
-        RBucket<Integer> bucket3 = redissonClient.getBucket("number3");
-        return bucket.get() + bucket2.get() + bucket3.get();
+//        RBucket<Integer> bucket2 = redissonClient.getBucket("number2");
+//        RBucket<Integer> bucket3 = redissonClient.getBucket("number3");
+        return bucket.get()
+//                + bucket2.get() + bucket3.get()
+                ;
     }
 
 
