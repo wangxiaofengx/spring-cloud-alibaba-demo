@@ -21,6 +21,7 @@
         <module>gateway</module>
         <module>rocketmq-service</module>
         <module>SeataService</module>
+        <module>netty-service</module>
     </modules>
 
     <properties>
