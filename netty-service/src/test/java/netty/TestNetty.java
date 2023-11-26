@@ -63,9 +63,8 @@ public class TestNetty {
                 .connect(new InetSocketAddress(9999));
         connect.sync();
         connect.channel().writeAndFlush(Unpooled.copiedBuffer("hello world", CharsetUtil.UTF_8));
-
-//        connect.channel().close().sync();
-        System.in.read();
+        connect.channel().close().sync();
+//        System.in.read();
     }
 
     @Test
@@ -83,9 +82,8 @@ public class TestNetty {
                     }
                 }).bind(9999);
 
-        bind.sync();
-
-        bind.channel().closeFuture().sync();
+//        bind.sync();
+//        bind.channel().closeFuture().sync();
     }
 
     class AcceptHandler extends ChannelInboundHandlerAdapter {

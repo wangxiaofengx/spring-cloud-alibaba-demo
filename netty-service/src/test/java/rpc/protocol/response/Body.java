@@ -1,4 +1,4 @@
-package rpc.bo;
+package rpc.protocol.response;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -7,8 +7,9 @@ import java.io.Serializable;
 
 @Data
 @Accessors(chain = true)
-public class Car implements Serializable {
+public class Body implements Serializable {
 
-    private Long id;
-    private String name;
+    Integer code;
+
+    Object result;
 }

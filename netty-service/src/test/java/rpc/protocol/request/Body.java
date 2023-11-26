@@ -1,9 +1,13 @@
 package rpc.protocol.request;
 
 import lombok.Data;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
 
 @Data
-public class Body {
+@Accessors(chain = true)
+public class Body implements Serializable {
 
     String name;
 
