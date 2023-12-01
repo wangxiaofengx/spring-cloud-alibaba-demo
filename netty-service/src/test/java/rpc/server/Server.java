@@ -1,24 +1,20 @@
 package rpc.server;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.*;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelPipeline;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import rpc.protocol.request.Body;
 import rpc.protocol.request.Decode;
-import rpc.protocol.request.Head;
 import rpc.protocol.request.Request;
 import rpc.server.service.CarService;
 import rpc.server.service.UserService;
 import rpc.util.SerializableUtil;
-import sun.misc.IOUtils;
 
-import java.io.*;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -37,15 +33,16 @@ public class Server {
         serviceMap.put(rpc.api.UserService.class.getName(), new UserService());
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         Server app = new Server();
         app.run();
     }
 
-    public void run() {
+    public void run() throws InterruptedException {
+        int port = 9999;
         ServerBootstrap server = new ServerBootstrap();
         NioEventLoopGroup nioEventLoopGroup = new NioEventLoopGroup(10);
-        server.group(nioEventLoopGroup)
+        ChannelFuture bind = server.group(nioEventLoopGroup)
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
                     @Override
@@ -55,7 +52,9 @@ public class Server {
                         pipeline.addLast(new Handler());
                     }
                 })
-                .bind(9999);
+                .bind(port);
+        System.out.println("server已启动，端口：" + port);
+        bind.channel().closeFuture().sync();
     }
 
     class Handler extends ChannelInboundHandlerAdapter {
@@ -66,7 +65,7 @@ public class Server {
             Object o = serviceMap.get(name);
             Method method = o.getClass().getMethod(body.getMethod(), body.getParameterTypes());
 
-            executorService.execute(()->{
+            executorService.execute(() -> {
                 try {
                     Object result = method.invoke(o, body.getArgs());
 

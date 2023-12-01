@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 public class Head implements Serializable {
 
-    private Long id = 0L;
+    private Long id;
 
-    private Integer bodyLength = 0;
+    private Integer bodyLength;
 }

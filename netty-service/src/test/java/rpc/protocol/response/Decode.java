@@ -14,7 +14,7 @@ public class Decode extends ByteToMessageDecoder {
 
     static {
         try {
-            byte[] bytes = SerializableUtil.toBytes(new Head());
+            byte[] bytes = SerializableUtil.toBytes(new Head().setId(0L).setBodyLength(0));
             HEAD_LENGTH = bytes.length;
         } catch (IOException e) {
             throw new RuntimeException(e);
