@@ -28,15 +28,15 @@ public class Client {
 
     public void run() throws InterruptedException {
         CarService carService = getCarService();
-        ExecutorService executorService = Executors.newFixedThreadPool(100);
+        ExecutorService executorService = Executors.newFixedThreadPool(50);
         LocalDateTime begin = LocalDateTime.now();
-        int count = 2000;
+        int count = 100000;
         CountDownLatch countDownLatch = new CountDownLatch(count);
         for (int i = 0; i < count; i++) {
             executorService.execute(() -> {
                 try {
                     List<Long> collect = carService.list().stream().map(Car::getId).collect(Collectors.toList());
-                    System.out.println(collect);
+//                    System.out.println(collect);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -47,8 +47,8 @@ public class Client {
         countDownLatch.await();
         LocalDateTime end = LocalDateTime.now();
         Duration between = Duration.between(begin, end);
-        transfer.destroy();
         System.out.println(between.toMillis());
+        transfer.destroy();
 //        System.out.println(list);
     }
 

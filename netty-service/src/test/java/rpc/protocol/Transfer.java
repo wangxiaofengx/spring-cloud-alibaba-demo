@@ -15,27 +15,30 @@ import rpc.util.SerializableUtil;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class Transfer {
 
     Map<Long, CompletableFuture<Body>> futureMap = Maps.newConcurrentMap();
-
-    volatile ChannelFuture channelFuture;
+    int pollSize = 10;
+    Channel[] channels = new Channel[pollSize];
+    Random random = new Random();
 
     public Channel getChannel() {
-        if (channelFuture != null) {
-            return channelFuture.channel();
+        int index = random.nextInt(pollSize);
+        Channel channel = channels[index];
+        if (channel != null) {
+            return channel;
         }
         synchronized (this) {
-            if (channelFuture != null) {
-                return channelFuture.channel();
+            channel = channels[index];
+            if (channel != null) {
+                return channel;
             }
             Bootstrap bootstrap = new Bootstrap();
-            NioEventLoopGroup eventExecutors = new NioEventLoopGroup(1);
-            channelFuture = bootstrap.group(eventExecutors)
+            NioEventLoopGroup eventExecutors = new NioEventLoopGroup(5);
+            Channel newChannel = bootstrap.group(eventExecutors)
                     .channel(NioSocketChannel.class)
                     .handler(new ChannelInitializer<NioSocketChannel>() {
                         @Override
@@ -45,19 +48,21 @@ public class Transfer {
                             pipeline.addLast(new ChannelInboundHandlerAdapter() {
                                 @Override
                                 public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+                                    // 一直是：nioEventLoopGroup-2-1，创建NioEventLoopGroup指定的线程数没起作用
+                                    System.out.println("channelRead:" + Thread.currentThread().getName());
                                     Response response = (Response) msg;
                                     futureMap.get(response.getHead().getId()).complete(response.getBody());
                                 }
                             });
                         }
                     })
-                    .connect(new InetSocketAddress(9999));
+                    .connect(new InetSocketAddress(9999)).channel();
+            channels[index] = newChannel;
         }
-        return channelFuture.channel();
+        return channels[index];
     }
 
     public rpc.protocol.response.Body send(rpc.protocol.request.Body body) throws IOException {
-
         Channel channel = getChannel();
 
         byte[] bodyBytes = SerializableUtil.toBytes(body);
