@@ -37,7 +37,7 @@ public class Server {
     public void run() throws InterruptedException {
         int port = 9999;
         ServerBootstrap server = new ServerBootstrap();
-        NioEventLoopGroup nioEventLoopGroup = new NioEventLoopGroup(10);
+        NioEventLoopGroup nioEventLoopGroup = new NioEventLoopGroup(5);
         ChannelFuture bind = server.group(nioEventLoopGroup)
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
@@ -60,9 +60,12 @@ public class Server {
             String name = body.getName();
             Object o = serviceMap.get(name);
             Method method = o.getClass().getMethod(body.getMethod(), body.getParameterTypes());
-            ctx.executor().execute(() -> {
+            String readThread = Thread.currentThread().getName();
+            ctx.executor().parent().next().execute(() -> {
+//            ctx.executor().execute(() -> {
                 try {
-                    System.out.println(Thread.currentThread().getName());
+                    String exeThread = Thread.currentThread().getName();
+                    System.out.println("readThread:" + readThread + ",exeThread:" + exeThread);
                     Object result = method.invoke(o, body.getArgs());
                     rpc.protocol.response.Body responseBody = new rpc.protocol.response.Body();
                     responseBody.setCode(1).setResult(result);

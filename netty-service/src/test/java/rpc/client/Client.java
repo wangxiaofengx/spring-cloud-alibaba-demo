@@ -30,7 +30,7 @@ public class Client {
         CarService carService = getCarService();
         ExecutorService executorService = Executors.newFixedThreadPool(50);
         LocalDateTime begin = LocalDateTime.now();
-        int count = 1000;
+        int count = 5000;
         CountDownLatch countDownLatch = new CountDownLatch(count);
         for (int i = 0; i < count; i++) {
             executorService.execute(() -> {

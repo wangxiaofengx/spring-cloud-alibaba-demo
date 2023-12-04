@@ -53,6 +53,7 @@ public class Transfer {
                                         System.out.println("channelRead:" + Thread.currentThread().getName());
                                         Response response = (Response) msg;
                                         futureMap.get(response.getHead().getId()).complete(response.getBody());
+                                        futureMap.remove(response.getHead().getId());
                                     });
                                 }
                             });
