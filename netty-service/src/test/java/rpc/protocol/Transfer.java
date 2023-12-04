@@ -24,6 +24,7 @@ public class Transfer {
     int pollSize = 10;
     Channel[] channels = new Channel[pollSize];
     Random random = new Random();
+    NioEventLoopGroup eventExecutors = new NioEventLoopGroup(5);
 
     public Channel getChannel() {
         int index = random.nextInt(pollSize);
@@ -37,7 +38,6 @@ public class Transfer {
                 return channel;
             }
             Bootstrap bootstrap = new Bootstrap();
-            NioEventLoopGroup eventExecutors = new NioEventLoopGroup(5);
             Channel newChannel = bootstrap.group(eventExecutors)
                     .channel(NioSocketChannel.class)
                     .handler(new ChannelInitializer<NioSocketChannel>() {
@@ -49,9 +49,11 @@ public class Transfer {
                                 @Override
                                 public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
                                     // 一直是：nioEventLoopGroup-2-1，创建NioEventLoopGroup指定的线程数没起作用
-                                    System.out.println("channelRead:" + Thread.currentThread().getName());
-                                    Response response = (Response) msg;
-                                    futureMap.get(response.getHead().getId()).complete(response.getBody());
+                                    ctx.executor().execute(() -> {
+                                        System.out.println("channelRead:" + Thread.currentThread().getName());
+                                        Response response = (Response) msg;
+                                        futureMap.get(response.getHead().getId()).complete(response.getBody());
+                                    });
                                 }
                             });
                         }
@@ -83,8 +85,12 @@ public class Transfer {
     }
 
     public void destroy() {
-        Channel channel = getChannel();
-        channel.close();
+        for (int i = 0; i < channels.length; i++) {
+            Channel channel = channels[i];
+            if (channel != null) {
+                channel.close();
+            }
+        }
 //        channel.closeFuture().syncUninterruptibly();
     }
 }

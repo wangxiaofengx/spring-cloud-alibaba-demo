@@ -19,14 +19,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Server {
 
     static Map<String, Object> serviceMap = new HashMap<>();
-
-    ExecutorService executorService = Executors.newWorkStealingPool();
 
     static {
         serviceMap.put(rpc.api.CarService.class.getName(), new CarService());
@@ -64,11 +60,10 @@ public class Server {
             String name = body.getName();
             Object o = serviceMap.get(name);
             Method method = o.getClass().getMethod(body.getMethod(), body.getParameterTypes());
-
-            executorService.execute(() -> {
+            ctx.executor().execute(() -> {
                 try {
+                    System.out.println(Thread.currentThread().getName());
                     Object result = method.invoke(o, body.getArgs());
-
                     rpc.protocol.response.Body responseBody = new rpc.protocol.response.Body();
                     responseBody.setCode(1).setResult(result);
 
