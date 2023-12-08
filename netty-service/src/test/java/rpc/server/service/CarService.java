@@ -25,4 +25,9 @@ public class CarService implements rpc.api.CarService {
 //        }
         return cars;
     }
+
+    @Override
+    public Car findById(Long id) {
+        return new Car().setId(id).setName("汽车");
+    }
 }

@@ -61,11 +61,13 @@ public class Server {
             Object o = serviceMap.get(name);
             Method method = o.getClass().getMethod(body.getMethod(), body.getParameterTypes());
             String readThread = Thread.currentThread().getName();
+            Channel client = ctx.channel();
+            System.out.println("client remoteAddress:" + client.remoteAddress());
             ctx.executor().parent().next().execute(() -> {
 //            ctx.executor().execute(() -> {
                 try {
                     String exeThread = Thread.currentThread().getName();
-                    System.out.println("readThread:" + readThread + ",exeThread:" + exeThread);
+//                    System.out.println("readThread:" + readThread + ",exeThread:" + exeThread);
                     Object result = method.invoke(o, body.getArgs());
                     rpc.protocol.response.Body responseBody = new rpc.protocol.response.Body();
                     responseBody.setCode(1).setResult(result);

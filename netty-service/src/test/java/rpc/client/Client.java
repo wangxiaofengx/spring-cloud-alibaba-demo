@@ -11,11 +11,9 @@ import java.lang.reflect.Proxy;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 public class Client {
 
@@ -28,15 +26,17 @@ public class Client {
 
     public void run() throws InterruptedException {
         CarService carService = getCarService();
-        ExecutorService executorService = Executors.newFixedThreadPool(50);
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
         LocalDateTime begin = LocalDateTime.now();
-        int count = 5000;
+        int count = 10;
         CountDownLatch countDownLatch = new CountDownLatch(count);
         for (int i = 0; i < count; i++) {
             executorService.execute(() -> {
                 try {
-                    List<Long> collect = carService.list().stream().map(Car::getId).collect(Collectors.toList());
+//                    List<Long> collect = carService.list().stream().map(Car::getId).collect(Collectors.toList());
 //                    System.out.println(collect);
+                    Car car = carService.findById(1l);
+                    System.out.println(car);
                 } catch (Exception e) {
                     e.printStackTrace();
                 } finally {
@@ -47,8 +47,10 @@ public class Client {
         countDownLatch.await();
         LocalDateTime end = LocalDateTime.now();
         Duration between = Duration.between(begin, end);
-        System.out.println(between.toMillis());
+
         transfer.destroy();
+        executorService.shutdown();
+        System.out.println(between.toMillis());
 //        System.out.println(list);
     }
 

@@ -21,7 +21,7 @@ import java.util.concurrent.CompletableFuture;
 public class Transfer {
 
     Map<Long, CompletableFuture<Body>> futureMap = Maps.newConcurrentMap();
-    int pollSize = 10;
+    int pollSize = 2;
     Channel[] channels = new Channel[pollSize];
     Random random = new Random();
     NioEventLoopGroup eventExecutors = new NioEventLoopGroup(5);
@@ -48,11 +48,11 @@ public class Transfer {
                             pipeline.addLast(new ChannelInboundHandlerAdapter() {
                                 @Override
                                 public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-                                    // 一直是：nioEventLoopGroup-2-1，创建NioEventLoopGroup指定的线程数没起作用
                                     ctx.executor().execute(() -> {
                                         System.out.println("channelRead:" + Thread.currentThread().getName());
                                         Response response = (Response) msg;
-                                        futureMap.get(response.getHead().getId()).complete(response.getBody());
+                                        CompletableFuture<Body> bodyCompletableFuture = futureMap.get(response.getHead().getId());
+                                        bodyCompletableFuture.complete(response.getBody());
                                         futureMap.remove(response.getHead().getId());
                                     });
                                 }
@@ -86,12 +86,13 @@ public class Transfer {
     }
 
     public void destroy() {
+//        eventExecutors.shutdownGracefully();
         for (int i = 0; i < channels.length; i++) {
             Channel channel = channels[i];
             if (channel != null) {
                 channel.close();
+//                channel.closeFuture().syncUninterruptibly();
             }
         }
-//        channel.closeFuture().syncUninterruptibly();
     }
 }
